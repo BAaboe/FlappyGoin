@@ -4,6 +4,7 @@ class Window:
     def __init__(self):
         self.BLACK = (0,0,0)
         self.WHITE = (255,255,255)
+        self.RED = (255,0,0)
 
         self.width = 800
         self.heigth = 600

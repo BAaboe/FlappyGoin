@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.y = self.wd.heigth/2
 
         self.speed = 0
-        self.speedMult = 1.5
+        self.speedMult = 1
         
         self.image = pygame.image.load("./assets/goin1.png")
         self.image = pygame.transform.scale(self.image, (self.width, self.heigth))
@@ -64,7 +64,8 @@ class Player(pygame.sprite.Sprite):
         #TODO fix it self.animate()
 
     def draw(self):
-        self.wd.window.blit(self.image, self.rect)
+        self.wd.window.blit(self.image, (self.x, self.y))
+        pygame.draw.rect(self.wd.window, self.wd.RED, pygame.Rect(self.x, self.y, self.heigth, self.width), 2)
 
     #TODO finish this
 
