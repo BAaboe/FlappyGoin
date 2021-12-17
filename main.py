@@ -21,6 +21,7 @@ class Main:
 
     def start(self):
         self.wd.window.fill(self.wd.WHITE)
+        self.wd.draw_bg()
         self.wd.display_text(100, "Flappy Goin", self.wd.BLACK, self.wd.width/2, 100)
         self.wd.display_text(50, "Press Space to start", self.wd.BLACK, self.wd.width/2, 400)
         self.p.draw()
@@ -37,6 +38,11 @@ class Main:
                         quit()
                     elif keys[K_SPACE]:
                         self.main()
+            self.wd.window.fill(self.wd.WHITE)
+            self.wd.update_bg()
+            self.wd.display_text(100, "Flappy Goin", self.wd.BLACK, self.wd.width/2, 100)
+            self.wd.display_text(50, "Press Space to start", self.wd.BLACK, self.wd.width/2, 400)
+            self.p.draw()
             pygame.display.update()
 
     def main(self):
@@ -56,9 +62,10 @@ class Main:
                         main.main()
             if not self.p.dead:
                 self.wd.window.fill(self.wd.WHITE)
+                self.wd.update_bg()
                 
 
-                if self.pipes[-1].downPipeX <= self.wd.width-400:
+                if self.pipes[-1].downPipeX <= self.wd.width - 400:
                     self.pipes.append(Pipe.Pipe(self.wd))
 
                 if self.pipes[0].downPipeX < self.p.x: pipe = self.pipes[1]
