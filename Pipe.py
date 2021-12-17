@@ -15,7 +15,7 @@ class Pipe:
 
         self.ySpawnRange = (self.heigth/10*2, self.heigth/10*9)
 
-        self.downPipeX = self.wd.width-self.width
+        self.downPipeX = self.wd.width
         self.downPipeY = random.randint(self.ySpawnRange[0], self.ySpawnRange[1])
 
         self.upPipeX = self.downPipeX
@@ -33,12 +33,6 @@ class Pipe:
         self.downPipeX -= self.speed
     
     def update(self):
-        #if self.downPipeX <= 0:
-        #    self.downPipeX = self.wd.width
-        #    self.upPipeX = self.downPipeX
-#
-        #    self.downPipeY = random.randint(self.ySpawnRange[0], self.ySpawnRange[1])
-        #    self.upPipeY = self.downPipeY - self.pipeDistance - self.heigth
         self.move()
 
         self.draw()

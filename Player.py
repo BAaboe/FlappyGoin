@@ -53,7 +53,7 @@ class Player(pygame.sprite.Sprite):
             self.flap -= 1
         
         self.speed = self.flap*self.speedMult
-        if self.rect.y + self.width > self.wd.heigth:
+        if self.y + self.width > self.wd.heigth:
             if pressed_keys[K_SPACE]:
                 self.move()
         else:
@@ -65,7 +65,6 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self):
         self.wd.window.blit(self.image, (self.x, self.y))
-        pygame.draw.rect(self.wd.window, self.wd.RED, pygame.Rect(self.x, self.y, self.heigth, self.width), 2)
 
     #TODO finish this
 
@@ -85,6 +84,7 @@ class Player(pygame.sprite.Sprite):
     def die(self):
         self.wd.display_text(200, "Game Over", self.wd.BLACK, self.wd.width/2, self.wd.heigth/2)
         self.wd.display_text(100, f"{self.score}", self.wd.BLACK, self.wd.width/2, self.wd.heigth/3*2)
-        self.dead =True
+        self.dead = True
+
 
         

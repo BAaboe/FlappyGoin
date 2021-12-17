@@ -17,25 +17,43 @@ class Main:
         self.p = Player.Player(self.wd)
 
         self.pipes = []
+        self.breakLoop = False
 
-        self.lastPipeIndex = 0
-        self.passedPipe = False
-
-
+    def start(self):
+        self.wd.window.fill(self.wd.WHITE)
+        self.wd.display_text(100, "Flappy Goin", self.wd.BLACK, self.wd.width/2, 100)
+        self.wd.display_text(50, "Press Space to start", self.wd.BLACK, self.wd.width/2, 400)
+        self.p.draw()
         
-
-    def main(self):
-        self.pipes.append(Pipe.Pipe(self.wd))
         while True:
-            keys = pygame.key.get_pressed()
             for event in pygame.event.get():
                 if event.type == QUIT:
                     pygame.quit()
                     quit()
                 if event.type == KEYDOWN:
+                    keys = pygame.key.get_pressed()
                     if keys[K_ESCAPE]:
                         pygame.quit()
                         quit()
+                    elif keys[K_SPACE]:
+                        self.main()
+            pygame.display.update()
+
+    def main(self):
+        self.pipes.append(Pipe.Pipe(self.wd))
+        while not self.breakLoop:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == KEYDOWN:
+                    keys = pygame.key.get_pressed()
+                    if keys[K_ESCAPE]:
+                        pygame.quit()
+                        quit()
+                    elif keys[K_SPACE] and self.p.dead:
+                        main = Main()
+                        main.main()
             if not self.p.dead:
                 self.wd.window.fill(self.wd.WHITE)
                 
@@ -53,14 +71,9 @@ class Main:
                     elif self.p.y+self.p.width > pipe.downPipeY:
                         self.p.die()
                         continue
-                    else:
-                        if not self.passedPipe:
-                            self.lastPipeIndex = self.pipes.index(pipe)
-                            self.p.score += 1
-                            self.passedPipe = True
 
-                if self.pipes[self.lastPipeIndex].downPipeX + self.pipes[self.lastPipeIndex].width < self.p.x:
-                    self.passedPipe = False
+                if self.p.x+self.p.heigth == pipe.downPipeX + (pipe.width/2):
+                    self.p.score += 1
 
                 i = 0
                 for pipe in self.pipes:
@@ -72,12 +85,6 @@ class Main:
 
                 self.p.update()
                 self.wd.display_text(100, f"{self.p.score}", self.wd.BLACK, self.wd.width/2, 100)
-            
-            else:
-                if keys[K_SPACE]:
-                    self.pipes.clear()
-                    self.pipes.append(Pipe.Pipe(self.wd))
-                    self.p.dead = False
 
             pygame.display.update()
             self.FramesPerSecond.tick(self.FPS)
@@ -85,4 +92,4 @@ class Main:
 
 if __name__ == "__main__":
     Game = Main()
-    Game.main()
+    Game.start()
