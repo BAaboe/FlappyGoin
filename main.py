@@ -105,7 +105,8 @@ class Main:
                 self.wd.display_text(100, f"{self.p.score}", self.wd.BLACK, self.wd.width/2, 100)
 
                 if pygame.Rect.colliderect(self.p.rect, closePipe.upRect): self.p.die(); continue
-                if pygame.Rect.colliderect(self.p.rect, closePipe.downRect): self.p.die(); continue
+                if not closePipe.upRect.bottom < 0:
+                    if pygame.Rect.colliderect(self.p.rect, closePipe.downRect): self.p.die(); continue
 
                 if self.p.y +self.p.width > self.wd.heigth:
                     self.p.die()
