@@ -25,12 +25,19 @@ class Pipe:
         self.downPipe = pygame.transform.scale(self.image, (self.width, self.heigth))
         self.upPipe = pygame.transform.rotate(self.downPipe, 180)
 
+        self.upRect = self.upPipe.get_rect()
+        self.downRect = self.downPipe.get_rect()
+
         self.speed = 5
 
 
     def move(self):
         self.upPipeX -= self.speed
         self.downPipeX -= self.speed
+        self.downRect.x = self.downPipeX
+        self.downRect.y = self.downPipeY
+        self.upRect.x = self.upPipeX
+        self.upRect.y = self.upPipeY
     
     def update(self):
         self.move()

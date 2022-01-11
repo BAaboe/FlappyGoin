@@ -21,19 +21,15 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.rotate(self.image, 270)
 
         self.rect = self.image.get_rect()
-        self.rect.center = [self.x, self.y]
+        self.rect.x = self.x
+        self.rect.y = self.y
 
         self.flap = 0
         self.lastFlap = 0
 
         self.score = 0
 
-        #self.curentRoation = 0
-
-        #self.image = pygame.transform.rotate(self.image, 360-self.curentRoation+90+180)
-        #self.curentRoation = 90
-        #self.maxRotation = 120
-        #self.minRotation = 60
+        self.rotation = 270
 
         self.dead = False
 
@@ -42,7 +38,8 @@ class Player(pygame.sprite.Sprite):
 
     def move(self):
         self.y -= self.speed
-        self.rect.move_ip(0, -self.speed)
+        self.rect.y = self.y
+        self.rect.x = self.x
 
 
     def update(self, main):
@@ -57,11 +54,8 @@ class Player(pygame.sprite.Sprite):
             self.flap -= 1
         
         self.speed = self.flap*self.speedMult
-        if self.y + self.width > self.wd.heigth:
-            if pressed_keys[K_SPACE]:
-                self.move()
-        else:
-            self.move()
+        
+        self.move()
         
         self.draw()
 
@@ -70,33 +64,43 @@ class Player(pygame.sprite.Sprite):
 
         self.lastFlap = self.flap
 
-        
-        #TODO fix it self.animate()
 
     def draw(self):
         self.wd.window.blit(self.image, (self.x, self.y))
 
-    #TODO finish this
-
-    def animate(self):
-        if self.flap + 10 <= 0:
-            degree = self.maxRotation
-        elif self.flap + 10 >= 10:
-            degree = self.minRotation
-        else:
-            degree = self.maxRotation-self.minRotation/20 * (self.flap+10)
-        self.rotate(degree)
-
-    def rotate(self, degree):
-        self.image = pygame.transform.rotate(self.image, 360-self.curentRoation+degree)
-        self.curentRoation = degree
+    
     
     def die(self):
         pygame.mixer.Sound.play(self.main.dieSound)
+        
+
+        self.dead = True
+        self.flap = 10
+        self.speedMult = 1
+        FramesPerSecond = pygame.time.Clock()
+        while True:
+            self.wd.window.fill(self.wd.WHITE)
+            self.wd.update_bg()
+            
+            for pipe in self.main.pipes:
+                pipe.draw()
+            
+            self.flap -= 1
+            self.speed = self.flap*self.speedMult
+            self.move()
+            if self.y+self.width > self.wd.heigth:
+                self.draw()
+                break
+            self.draw()
+            pygame.display.update()
+            FramesPerSecond.tick(self.main.FPS)
+
         pygame.mixer.Sound.play(self.main.themeSong)
+
         self.wd.display_text(200, "Game Over", self.wd.BLACK, self.wd.width/2, self.wd.heigth/2)
         self.wd.display_text(100, f"{self.score}", self.wd.BLACK, self.wd.width/2, self.wd.heigth/3*2)
-        self.dead = True
+
+        
 
 
         
