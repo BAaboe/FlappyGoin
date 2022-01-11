@@ -10,17 +10,19 @@ class Player(pygame.sprite.Sprite):
 
         self.width = 50
         self.heigth = 100
+
         self.x = self.wd.width/4
-        self.y = self.wd.heigth/2
+        self.y = self.wd.heigth/2-(self.heigth/2)
 
         self.speed = 0
         self.speedMult = 1
         
-        self.image = pygame.image.load("./assets/goin1.png")
-        self.image = pygame.transform.scale(self.image, (self.width, self.heigth))
-        self.image = pygame.transform.rotate(self.image, 270)
+        self.flipImg = pygame.image.load("./assets/goin1.png")
+        self.flipImg = pygame.transform.scale(self.flipImg, (self.width, self.heigth))
 
-        self.rect = self.image.get_rect()
+        self.image = self.flipImg
+
+        self.rect = self.flipImg.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -34,6 +36,8 @@ class Player(pygame.sprite.Sprite):
         self.dead = False
 
         self.main = main
+
+        self.counter = 0
 
 
     def move(self):
@@ -80,7 +84,7 @@ class Player(pygame.sprite.Sprite):
         FramesPerSecond = pygame.time.Clock()
         while True:
             self.wd.window.fill(self.wd.WHITE)
-            self.wd.update_bg()
+            self.wd.draw_bg()
             
             for pipe in self.main.pipes:
                 pipe.draw()
@@ -88,7 +92,7 @@ class Player(pygame.sprite.Sprite):
             self.flap -= 1
             self.speed = self.flap*self.speedMult
             self.move()
-            if self.y+self.width > self.wd.heigth:
+            if self.y+self.heigth > self.wd.heigth:
                 self.draw()
                 break
             self.draw()

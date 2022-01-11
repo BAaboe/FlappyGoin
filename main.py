@@ -85,14 +85,6 @@ class Main:
                 if self.pipes[-1].downPipeX <= self.wd.width - 400:
                     self.pipes.append(Pipe.Pipe(self.wd))
 
-                if self.pipes[0].downPipeX < self.p.x-self.p.heigth: closePipe = self.pipes[1]
-                else: closePipe = self.pipes[0]
-
-
-                if self.p.x+self.p.heigth == closePipe.downPipeX + (closePipe.width/2):
-                    self.p.score += 1
-                    pygame.mixer.Sound.play(self.dingSound)
-
                 i = 0
                 for pipe in self.pipes:
                     if pipe.isOutOfScreen():
@@ -103,13 +95,19 @@ class Main:
                 
                 self.p.update(self)
                 self.wd.display_text(100, f"{self.p.score}", self.wd.BLACK, self.wd.width/2, 100)
-
-                if pygame.Rect.colliderect(self.p.rect, closePipe.upRect): self.p.die(); continue
-                if not closePipe.upRect.bottom < 0:
-                    if pygame.Rect.colliderect(self.p.rect, closePipe.downRect): self.p.die(); continue
-
-                if self.p.y +self.p.width > self.wd.heigth:
+                
+                if self.p.y + self.p.heigth + self.p.width > self.wd.heigth:
                     self.p.die()
+
+                for closePipe in self.pipes:
+                    if pygame.Rect.colliderect(self.p.rect, closePipe.upRect): self.p.die(); continue
+                    if not closePipe.upRect.bottom < 2:
+                        if pygame.Rect.colliderect(self.p.rect, closePipe.downRect): self.p.die(); continue
+
+                    if self.p.x+self.p.heigth == closePipe.downPipeX + (closePipe.width/2):
+                        self.p.score += 1
+                        pygame.mixer.Sound.play(self.dingSound)
+
                 
 
             pygame.display.update()
