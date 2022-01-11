@@ -7,6 +7,7 @@ import Pipe
 
 pygame.init()
 
+
 class Main:
     def __init__(self):
         self.wd = Window.Window()
@@ -14,12 +15,21 @@ class Main:
         self.FPS = 30
         self.FramesPerSecond = pygame.time.Clock()
 
-        self.p = Player.Player(self.wd)
+        self.themeSong = pygame.mixer.Sound("./assets/Theme.wav")
+        self.startSound = pygame.mixer.Sound("./assets/start.wav")
+        self.dieSound = pygame.mixer.Sound("./assets/die.wav")
+        self.dingSound = pygame.mixer.Sound("./assets/ding.wav")
+        self.flappSound = pygame.mixer.Sound("./assets/flapp.wav")
+
+        self.p = Player.Player(self.wd, self)
 
         self.pipes = []
         self.breakLoop = False
 
+        
+
     def start(self):
+        pygame.mixer.Sound.play(self.themeSong)
         self.wd.window.fill(self.wd.WHITE)
         self.wd.draw_bg()
         self.wd.display_text(100, "Flappy Goin", self.wd.BLACK, self.wd.width/2, 100)
@@ -37,6 +47,8 @@ class Main:
                         pygame.quit()
                         quit()
                     elif keys[K_SPACE]:
+                        pygame.mixer.Sound.stop(self.themeSong)
+                        pygame.mixer.Sound.play(self.startSound)
                         self.main()
             self.wd.window.fill(self.wd.WHITE)
             self.wd.update_bg()
@@ -58,9 +70,12 @@ class Main:
                         pygame.quit()
                         quit()
                     elif keys[K_SPACE] and self.p.dead:
+                        pygame.mixer.Sound.stop(self.themeSong)
+                        pygame.mixer.Sound.play(self.startSound)
                         main = Main()
                         main.main()
-            if not self.p.dead:
+            if not self.p.dead: 
+
                 self.wd.window.fill(self.wd.WHITE)
                 self.wd.update_bg()
                 
@@ -81,6 +96,7 @@ class Main:
 
                 if self.p.x+self.p.heigth == pipe.downPipeX + (pipe.width/2):
                     self.p.score += 1
+                    pygame.mixer.Sound.play(self.dingSound)
 
                 i = 0
                 for pipe in self.pipes:
@@ -90,7 +106,7 @@ class Main:
                         pipe.update()
                     i += 1
 
-                self.p.update()
+                self.p.update(self)
                 self.wd.display_text(100, f"{self.p.score}", self.wd.BLACK, self.wd.width/2, 100)
 
             pygame.display.update()

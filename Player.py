@@ -2,8 +2,9 @@ import pygame
 from pygame.locals import *
 import Window
 
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self, wd: Window.Window()):
+    def __init__(self, wd: Window.Window(), main):
         super().__init__()
         self.wd = wd
 
@@ -23,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = [self.x, self.y]
 
         self.flap = 0
+        self.lastFlap = 0
 
         self.score = 0
 
@@ -35,13 +37,15 @@ class Player(pygame.sprite.Sprite):
 
         self.dead = False
 
+        self.main = main
+
 
     def move(self):
         self.y -= self.speed
         self.rect.move_ip(0, -self.speed)
 
 
-    def update(self):
+    def update(self, main):
         pressed_keys = pygame.key.get_pressed()
 
         if pressed_keys[K_SPACE]:
@@ -60,6 +64,12 @@ class Player(pygame.sprite.Sprite):
             self.move()
         
         self.draw()
+
+        if self.flap == 10 and self.lastFlap != 10:
+            pygame.mixer.Sound.play(self.main.flappSound)
+
+        self.lastFlap = self.flap
+
         
         #TODO fix it self.animate()
 
@@ -82,6 +92,8 @@ class Player(pygame.sprite.Sprite):
         self.curentRoation = degree
     
     def die(self):
+        pygame.mixer.Sound.play(self.main.dieSound)
+        pygame.mixer.Sound.play(self.main.themeSong)
         self.wd.display_text(200, "Game Over", self.wd.BLACK, self.wd.width/2, self.wd.heigth/2)
         self.wd.display_text(100, f"{self.score}", self.wd.BLACK, self.wd.width/2, self.wd.heigth/3*2)
         self.dead = True
