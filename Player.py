@@ -4,9 +4,6 @@ import Window
 
 
 class Player(pygame.sprite.Sprite):
-    """
-    This is the player class. This holds information on the position and other useful information on a player.
-    """
     def __init__(self, wd: Window.Window(), main):
         super().__init__()
         self.wd = wd
@@ -95,9 +92,6 @@ class Player(pygame.sprite.Sprite):
         self.curentRoation = degree
     
     def die(self):
-        """
-        Displays Game over and the score when the player dies
-        """
         pygame.mixer.Sound.play(self.main.dieSound)
         pygame.mixer.Sound.play(self.main.themeSong)
         self.wd.display_text(200, "Game Over", self.wd.BLACK, self.wd.width/2, self.wd.heigth/2)
