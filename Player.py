@@ -15,11 +15,11 @@ class Player(pygame.sprite.Sprite):
         self.y = self.wd.heigth/2-(self.heigth/2)
 
         self.speed = 0
-        self.speedMult = 1
+        self.speedMult = 2
         
         self.flipImg = pygame.image.load("./assets/goin1.png")
-        self.flipImg = pygame.transform.rotate(self.flipImg, 270)
-        self.flipImg = pygame.transform.scale(self.flipImg, (self.width, self.heigth))
+        #self.flipImg = pygame.transform.rotate(self.flipImg, 270)
+        self.flipImg = pygame.transform.scale(self.flipImg, (self.heigth, self.width))
 
         self.image = self.flipImg
 
@@ -51,10 +51,10 @@ class Player(pygame.sprite.Sprite):
         pressed_keys = pygame.key.get_pressed()
 
         if pressed_keys[K_SPACE]:
-            if self.rect.top <= 10:
+            if self.rect.top <= 5:
                 self.flap -= 1
             else:
-                self.flap = 10
+                self.flap = 5
         else:
             self.flap -= 1
         
@@ -64,7 +64,7 @@ class Player(pygame.sprite.Sprite):
         
         self.draw()
 
-        if self.flap == 10 and self.lastFlap != 10:
+        if self.flap == 5 and self.lastFlap != 5:
             pygame.mixer.Sound.play(self.main.flappSound)
 
         self.lastFlap = self.flap
@@ -87,8 +87,7 @@ class Player(pygame.sprite.Sprite):
             self.wd.window.fill(self.wd.WHITE)
             self.wd.draw_bg()
             
-            for pipe in self.main.pipes:
-                pipe.draw()
+            
             
             self.flap -= 1
             self.speed = self.flap*self.speedMult
@@ -97,9 +96,16 @@ class Player(pygame.sprite.Sprite):
                 self.draw()
                 break
             self.draw()
+
+            for pipe in self.main.pipes:
+                pipe.draw()
+
             pygame.display.update()
             FramesPerSecond.tick(self.main.FPS)
 
+        for pipe in self.main.pipes:
+                pipe.draw()
+        pygame.display.update()
         pygame.mixer.Sound.play(self.main.themeSong)
 
         self.wd.display_text(200, "Game Over", self.wd.BLACK, self.wd.width/2, self.wd.heigth/2)

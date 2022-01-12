@@ -94,15 +94,16 @@ class Main:
                         i += 1
                 
                 self.p.update(self)
+                
                 self.wd.display_text(100, f"{self.p.score}", self.wd.BLACK, self.wd.width/2, 100)
                 
                 if self.p.y + self.p.heigth > self.wd.heigth:
                     self.p.die()
 
                 for closePipe in self.pipes:
-                    if pygame.Rect.colliderect(self.p.rect, closePipe.upRect): self.p.die(); continue
                     if not closePipe.upRect.bottom < 2:
-                        if pygame.Rect.colliderect(self.p.rect, closePipe.downRect): self.p.die(); continue
+                        if pygame.Rect.colliderect(self.p.rect, closePipe.upRect): self.p.die(); continue
+                    if pygame.Rect.colliderect(self.p.rect, closePipe.downRect): self.p.die(); continue
 
                     if self.p.x+self.p.heigth == closePipe.downPipeX + (closePipe.width/2):
                         self.p.score += 1
