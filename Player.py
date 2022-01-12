@@ -8,8 +8,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.wd = wd
 
-        self.width = 50
-        self.heigth = 100
+        self.width = 100
+        self.heigth = 50
 
         self.x = self.wd.width/4
         self.y = self.wd.heigth/2-(self.heigth/2)
@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.speedMult = 1
         
         self.flipImg = pygame.image.load("./assets/goin1.png")
+        self.flipImg = pygame.transform.rotate(self.flipImg, 270)
         self.flipImg = pygame.transform.scale(self.flipImg, (self.width, self.heigth))
 
         self.image = self.flipImg

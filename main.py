@@ -96,7 +96,7 @@ class Main:
                 self.p.update(self)
                 self.wd.display_text(100, f"{self.p.score}", self.wd.BLACK, self.wd.width/2, 100)
                 
-                if self.p.y + self.p.heigth + self.p.width > self.wd.heigth:
+                if self.p.y + self.p.heigth > self.wd.heigth:
                     self.p.die()
 
                 for closePipe in self.pipes:
