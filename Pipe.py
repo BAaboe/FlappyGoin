@@ -50,8 +50,3 @@ class Pipe:
     
     def isOutOfScreen(self):
         return self.downPipeX <= 0 - self.width
-
-
-    
-
-        
