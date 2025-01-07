@@ -10,7 +10,7 @@ class Window:
         self.heigth = 600
 
         self.window = pygame.display.set_mode((self.width, self.heigth))
-        pygame.display.set_caption("Flappy Goin")
+        pygame.display.set_caption("Flappy Gisle")
         Icon = pygame.image.load("./assets/icon.png")
         pygame.display.set_icon(Icon)
         self.window.fill(self.WHITE)
